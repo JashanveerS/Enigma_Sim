@@ -1,0 +1,40 @@
+import random
+a = []
+First=[]
+Second = []
+Third = []
+def ini():
+    for i in range(65,91):
+        a.append(chr(i))
+        First.append(chr(i))
+        Second.append(chr(i))
+        Third.append(chr(i))
+        print(a)
+    return a,First,Second,Third
+
+def code(x):
+    x = x.upper().split()
+    print(x)
+    for j in range(0,len(a)):
+        if x[0] == a[j]:
+            for q in range(0,j):
+                First.insert(len(First),First.pop(0))
+                #print(First)
+        elif a[j] == x[1]:
+            for q in range(0,j):
+                Second.insert(len(Second),Second.pop(0))
+                #print(Second)
+        elif a[j] == x[2]:
+            for q in range(0,j):
+                Third.insert(len(Third),Third.pop(0))
+                #print(Third)
+    return First,Second, Third
+def encrypt():
+    
+
+
+
+    
+ini()
+code('s d f')
+print(First, Second, Third)
