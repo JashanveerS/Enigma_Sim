@@ -1,0 +1,121 @@
+import csv
+
+alphabetlist=   ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O',
+            'P','Q','R','S','T','U','V','W','X','Y','Z']
+rotor1list=     ['E','K','M','F','L','G','D','Q','V','Z','N','T','O','W','Y',
+            'H','X','U','S','P','A','I','B','R','C','J']
+rotor2list=     ['A','J','D','K','S','I','R','U','X','B','L','H','W','T','M',
+            'C','Q','G','Z','N','P','Y','F','V','O','E']
+rotor3list=     ['B','D','F','H','J','L','C','P','R','T','X','V','Z','N','Y',
+            'E','I','W','G','A','K','M','U','S','Q','O']
+reflectorBlist=['Y','R','U','H','Q','S','L','D','P','X','N','G','O','K','M',
+            'I','E','B','F','Z','C','W','V','J','A','T']
+rotor1listTemp = []
+rotor2listTemp = []
+rotor3listTemp = []
+countf=0             #count for fast rotor
+countm=0             #count for Mid rotor
+counts=0             #count for slow rotor
+
+
+def rotor(j,k,l):
+    global rotor1list, rotor2list, rotor3list,rotor1listTemp,rotor2listTemp,rotor3listTemp
+    for e in range(65,j):
+        rotor1list.append(rotor1list[0])
+        del rotor1list[0]                                                                           #setting the rotors
+    rotor1listTemp = rotor1list
+    rotor1list=['E','K','M','F','L','G','D','Q','V','Z','N','T','O','W','Y',
+            'H','X','U','S','P','A','I','B','R','C','J']
+    
+    for e in range(65,k):
+        rotor2list.append(rotor2list[0])
+        del rotor2list[0]
+        print("I ran", e)
+    rotor2listTemp = rotor2list
+    rotor2list = ['A','J','D','K','S','I','R','U','X','B','L','H','W','T','M',
+            'C','Q','G','Z','N','P','Y','F','V','O','E']
+
+    for e in range(65,l):
+        rotor3list.append(rotor3list[0])
+        del rotor3list[0]
+    rotor3listTemp = rotor3list
+    rotor3list = ['B','D','F','H','J','L','C','P','R','T','X','V','Z','N','Y',
+            'E','I','W','G','A','K','M','U','S','Q','O']
+
+
+def shifting():
+    global countf,countm,counts,rotor1list,rotor2list,rotor3list,rotor1listTemp,rotor2listTemp,rotor3listTemp
+    rotor1listTemp.append(rotor1listTemp[0])
+    del rotor1listTemp[0]
+
+    countf+=1
+    if countf == 26:
+        rotor1listTemp = rotor1list
+        countf = 1
+        countm += 1
+        rotor2listTemp.append(rotor2listTemp[0])
+        del rotor2listTemp[0]
+        if countm == 26:
+            countm = 1
+            rotor2listTemp=rotor2list
+            counts +=1
+            rotor3listTemp.append(rotor3listTemp[0])
+            del rotor3listTemp[0]
+            if counts == 26:
+                counts =1
+                rotor3listTemp = rotor3list
+            else:
+                pass
+        else:
+            pass
+    else:
+        pass
+
+    if countf%26==0:
+        #change middle rotor and increase count m
+        rotor2listTemp.append(rotor2listTemp[0])
+        del rotor2listTemp[0]
+        
+    if countm%26==0 and countm!=0:
+        #change slow rotor
+        rotor3listTemp.append(rotor3listTemp[0])
+        del rotor1listTemp[0]
+
+
+def encrypt(msg):
+    finalmsg=''
+    msg=list(msg)
+    for i in range(0,len(msg)):
+        if msg[i] == ' ':
+            msg[i] = 'X'
+    for i in msg:
+        if i in alphabetlist:
+            strboi = alphabetlist[rotor1listTemp.index(alphabetlist[rotor2listTemp.index(alphabetlist[rotor3listTemp.index(reflectorBlist[alphabetlist.index(rotor3listTemp[alphabetlist.index(rotor2listTemp[alphabetlist.index(rotor1listTemp[alphabetlist.index(i)])])])])])])]
+            shifting()
+        finalmsg = finalmsg + strboi
+    return finalmsg
+
+
+print("NOTE:- The spaces between your texts will ber converted into an X")
+counter = 0
+history = []
+while True:
+    choice = input('''DO YOU WISH TO 
+    1)ENCRYPT OR DECRYPT
+    2)Export History\n''')
+    if choice == '1':
+        j=input("Enter rotor settings: ").upper()
+        mssg = input("Enter the text to be encrypted").upper()
+        rotor(ord(j[0]),ord(j[1]),ord(j[2]))
+        finalmsg=encrypt(mssg)
+        history.append([j,mssg,finalmsg])
+        print(j)
+        print(finalmsg)
+    elif choice == '2':
+        print("FILE MADE")
+        counter +=1
+        with open(f"HISTORY{counter}.csv","w") as f:
+            W = csv.writer(f,)
+            W.writerow(["ROTOR SETTING", "INPUT", "OUTPUT"])
+            W.writerows(history)
+            
