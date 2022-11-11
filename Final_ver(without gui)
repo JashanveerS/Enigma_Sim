@@ -19,11 +19,11 @@ countm=0             #count for Mid rotor
 counts=0             #count for slow rotor
 
 
-def rotor(j,k,l):
+def rotor(j,k,l):                                                                                           #setting the rotors
     global rotor1list, rotor2list, rotor3list,rotor1listTemp,rotor2listTemp,rotor3listTemp
     for e in range(65,j):
         rotor1list.append(rotor1list[0])
-        del rotor1list[0]                                                                           #setting the rotors
+        del rotor1list[0]                                                                           
     rotor1listTemp = rotor1list
     rotor1list=['E','K','M','F','L','G','D','Q','V','Z','N','T','O','W','Y',
             'H','X','U','S','P','A','I','B','R','C','J']
@@ -31,7 +31,7 @@ def rotor(j,k,l):
     for e in range(65,k):
         rotor2list.append(rotor2list[0])
         del rotor2list[0]
-        print("I ran", e)
+        
     rotor2listTemp = rotor2list
     rotor2list = ['A','J','D','K','S','I','R','U','X','B','L','H','W','T','M',
             'C','Q','G','Z','N','P','Y','F','V','O','E']
@@ -44,7 +44,7 @@ def rotor(j,k,l):
             'E','I','W','G','A','K','M','U','S','Q','O']
 
 
-def shifting():
+def shifting():                                                                                                     #shifting rotor after every word for better encryption
     global countf,countm,counts,rotor1list,rotor2list,rotor3list,rotor1listTemp,rotor2listTemp,rotor3listTemp
     rotor1listTemp.append(rotor1listTemp[0])
     del rotor1listTemp[0]
@@ -90,12 +90,14 @@ def rotor1(i):
     else:
         Letter = alphabetlist[rotor1listTemp.index(i)]
 
+
 def rotor2(i):
     global reverse
     if reverse == False:
         rotor3(rotor2listTemp[alphabetlist.index(i)])
     else:
         rotor1(alphabetlist[rotor2listTemp.index(i)])
+
 
 def rotor3(i):
     global reverse
@@ -104,14 +106,16 @@ def rotor3(i):
     else:
         rotor2(alphabetlist[rotor3listTemp.index(i)])
 
+
 def rev(i):
     global reverse
     reverse = True
     rotor3(reflectorBlist[alphabetlist.index(i)])
+
+    
 def encrypt(msg):
     global reverse ,Letter
     finalmsg=''
-    finalmsg2=''
     msg=list(msg)
     for i in range(0,len(msg)):
         if msg[i] == ' ':
@@ -119,7 +123,6 @@ def encrypt(msg):
     for i in msg:
         reverse = False
         if i in alphabetlist:
-            #Word = alphabetlist[rotor1listTemp.index(alphabetlist[rotor2listTemp.index(alphabetlist[rotor3listTemp.index(reflectorBlist[alphabetlist.index(rotor3listTemp[alphabetlist.index(rotor2listTemp[alphabetlist.index(rotor1listTemp[alphabetlist.index(i)])])])])])])]
             rotor1(i)
             shifting()
         finalmsg = finalmsg + Letter
