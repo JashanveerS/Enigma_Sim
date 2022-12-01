@@ -117,9 +117,6 @@ def encrypt(msg):
     global reverse ,Letter
     finalmsg=''
     msg=list(msg)
-    for i in range(0,len(msg)):
-        if msg[i] == ' ':
-            msg[i] = 'x'
     for i in msg:
         reverse = False
         if i in alphabetlist:
@@ -129,7 +126,7 @@ def encrypt(msg):
     return finalmsg
 
 
-print("NOTE:- The spaces between your texts will ber converted into an X")
+print("NOTE:- The spaces between your texts Should be writen as an X")
 counter = 0
 history = []
 datetime_object = datetime.datetime.today()
